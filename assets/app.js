@@ -2,7 +2,7 @@
   "use strict";
 
   var app = document.getElementById("app");
-  var state = { counties: [], site: null, county: "全部", query: "", tab: "highlights" };
+  var state = { counties: [], site: null, news: null, bios: null, county: "全部", query: "", tab: "highlights" };
 
   var TABS = [
     ["highlights", "今日重點"],
@@ -35,14 +35,17 @@
   }
 
   function demoBar() {
-    return state.site && state.site.demo
-      ? '<div class="demo-bar">目前是示範畫面，內容都是假資料，還沒有接上真實新聞。</div>'
-      : "";
+    var note = state.site && state.site.notice;
+    return note ? '<div class="demo-bar">' + esc(note) + "</div>" : "";
   }
 
   function updated() {
-    var u = state.site && state.site.updatedAt;
-    return u ? "資料更新時間：" + esc(u) : "資料更新時間：尚未更新（示範畫面）";
+    var u = (state.news && state.news.generatedAt) || (state.site && state.site.updatedAt);
+    var s = u ? "資料更新時間：" + esc(u) : "資料更新時間：尚未更新（示範畫面）";
+    if (state.news && state.news.failed && state.news.failed.length) {
+      s += "。部分候選人這次更新失敗，顯示的是前一次的資料";
+    }
+    return s;
   }
 
   function home() {
@@ -80,15 +83,24 @@
 
   function panel(tab, who) {
     var n = esc(who.name);
+    var key = who.county + "_" + who.name;
     if (tab === "highlights") {
       return "<p>示範：這裡會顯示 " + n + " 今天的 2 到 3 則重點，每則附上新聞來源。</p>";
     }
     if (tab === "bio") {
-      return "<p>示範：這裡會整理 " + n + " 的基本資料、學經歷、重要經歷和公開爭議，每項都附上來源。</p>";
+      var b = state.bios && state.bios.items && state.bios.items[key];
+      if (!b) return "<p>目前找不到 " + n + " 可靠的公開資料。有新資料時，會在每天更新時補上。</p>";
+      return "<p>" + esc(b.text).replace(/\n/g, "</p><p>") + "</p>" +
+        '<p class="meta">資料來源：' + (b.url ? '<a href="' + esc(b.url) + '" target="_blank" rel="noopener">' + esc(b.source) + "</a>" : esc(b.source)) +
+        "。內容僅供參考，請以原文為準。</p>";
     }
     if (tab === "news") {
-      return [1, 2, 3].map(function (i) {
-        return '<div class="item"><div>示範新聞標題 ' + i + '</div><div class="meta">媒體名稱，日期</div></div>';
+      if (!state.news || !state.news.items) return "<p>新聞資料還沒有準備好。</p>";
+      var list = state.news.items[key] || [];
+      if (!list.length) return "<p>最近 14 天沒有找到和 " + n + " 有關的新聞。</p>";
+      return list.map(function (x) {
+        return '<div class="item"><a href="' + esc(x.link) + '" target="_blank" rel="noopener">' + esc(x.title) +
+          '</a><div class="meta">' + esc(x.source) + "，" + esc(x.date) + "</div></div>";
       }).join("");
     }
     return "<p>示範：這裡會列出 " + n + " 已公開的行程。找不到時，會寫「目前沒有公開行程」。</p>";
@@ -170,9 +182,13 @@
     });
   }
 
-  Promise.all([load("data/candidates.json"), load("data/site.json")]).then(function (res) {
+  function optional(url) { return load(url).catch(function () { return null; }); }
+
+  Promise.all([load("data/candidates.json"), load("data/site.json"), optional("data/news.json"), optional("data/bios.json")]).then(function (res) {
     state.counties = res[0].counties;
     state.site = res[1];
+    state.news = res[2];
+    state.bios = res[3];
     window.addEventListener("hashchange", function () { state.tab = "highlights"; route(); });
     route();
   }).catch(function () {

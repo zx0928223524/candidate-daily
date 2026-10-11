@@ -141,3 +141,8 @@ h2 { font-family: var(--serif); font-size: 24px; margin: 0 0 16px; line-height: 
 }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+.meta { color: var(--muted); font-size: 14px; }
+.item a { font-weight: 500; }
+.item a:hover, .meta a:hover { color: var(--accent); }
+.meta a { text-decoration: underline; text-underline-offset: 3px; }
