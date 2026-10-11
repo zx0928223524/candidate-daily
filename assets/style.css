@@ -1,0 +1,143 @@
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #f5f5f8;
+  --ink: #15171c;
+  --muted: #6a6f7d;
+  --line: #e7e8ee;
+  --accent: #5b46e5;
+  --accent-soft: #eeebfd;
+  --radius: 16px;
+  --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* 極細的紙張顆粒，只是讓純白多一點質感 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .04;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+
+.wrap { position: relative; max-width: 980px; margin: 0 auto; padding: 0 20px 80px; }
+
+.demo-bar {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 14px;
+  text-align: center;
+  padding: 8px 16px;
+}
+
+.top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; padding: 36px 0 8px; flex-wrap: wrap;
+}
+.brand { font-family: var(--serif); font-weight: 700; font-size: 34px; letter-spacing: .02em; line-height: 1.2; }
+.nav a {
+  font-size: 15px; padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg);
+}
+.nav a:hover { border-color: var(--accent); color: var(--accent); }
+.sub { color: var(--muted); font-size: 15px; margin: 0 0 32px; }
+
+h2 { font-family: var(--serif); font-size: 24px; margin: 0 0 16px; line-height: 1.3; }
+
+.overview { margin: 0 0 44px; padding: 0; list-style: none; }
+.overview li {
+  padding: 4px 0 4px 18px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 14px;
+  max-width: 62ch;
+}
+
+.tools { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+.search {
+  width: 100%; max-width: 360px; padding: 12px 16px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+  font: inherit;
+}
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+.chip {
+  flex: none; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--bg); font-size: 14px;
+}
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.county { margin-bottom: 36px; }
+.county h3 { font-size: 15px; font-weight: 500; color: var(--muted); margin: 0 0 12px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.card {
+  display: flex; align-items: center; gap: 14px; padding: 16px;
+  border-radius: var(--radius); background: var(--surface);
+  border: 1px solid transparent;
+  transition: border-color .15s, background .15s;
+}
+.card:hover { border-color: var(--accent); background: var(--bg); }
+.mono {
+  flex: none; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--line);
+  display: grid; place-items: center;
+  font-family: var(--serif); font-weight: 700; font-size: 18px; color: var(--accent);
+}
+.card b { font-size: 17px; font-weight: 700; }
+.empty { color: var(--muted); padding: 24px 0; }
+
+/* 候選人頁 */
+.back { display: inline-block; margin: 28px 0 8px; font-size: 15px; color: var(--muted); }
+.back:hover { color: var(--accent); }
+.who { font-family: var(--serif); font-weight: 700; font-size: 44px; line-height: 1.2; margin: 8px 0 4px; }
+.where { color: var(--muted); margin: 0 0 28px; }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 28px; overflow-x: auto; }
+.tab {
+  flex: none; background: none; border: 0; cursor: pointer;
+  padding: 12px 18px; font-size: 16px; color: var(--muted);
+  border-bottom: 3px solid transparent; margin-bottom: -1px;
+}
+.tab[aria-selected="true"] { color: var(--ink); font-weight: 700; border-bottom-color: var(--accent); }
+
+.panel { max-width: 68ch; }
+.panel p { margin: 0 0 14px; }
+.item { padding: 16px 0; border-bottom: 1px solid var(--line); }
+.item:last-child { border-bottom: 0; }
+.item .meta { color: var(--muted); font-size: 14px; }
+
+/* 假新聞專區 */
+.fc { padding: 20px; border-radius: var(--radius); background: var(--surface); margin-bottom: 14px; max-width: 68ch; }
+.fc dl { margin: 0; }
+.fc dt { font-size: 14px; color: var(--muted); margin-top: 12px; }
+.fc dt:first-child { margin-top: 0; }
+.fc dd { margin: 2px 0 0; }
+.badge { display: inline-block; padding: 2px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 14px; }
+
+@media (max-width: 560px) {
+  .brand { font-size: 28px; }
+  .who { font-size: 36px; }
+  .grid { grid-template-columns: 1fr 1fr; }
+  .card { padding: 14px; gap: 10px; }
+  .mono { width: 38px; height: 38px; font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
