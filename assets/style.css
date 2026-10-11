@@ -146,3 +146,8 @@ h2 { font-family: var(--serif); font-size: 24px; margin: 0 0 16px; line-height: 
 .item a { font-weight: 500; }
 .item a:hover, .meta a:hover { color: var(--accent); }
 .meta a { text-decoration: underline; text-underline-offset: 3px; }
+
+.src { text-decoration: underline; text-underline-offset: 3px; }
+.src:hover { color: var(--accent); }
+.overview .meta { margin-top: 2px; }
+.note { margin-top: 18px; }

@@ -2,7 +2,7 @@
   "use strict";
 
   var app = document.getElementById("app");
-  var state = { counties: [], site: null, news: null, bios: null, county: "全部", query: "", tab: "highlights" };
+  var state = { counties: [], site: null, news: null, bios: null, hl: null, county: "全部", query: "", tab: "highlights" };
 
   var TABS = [
     ["highlights", "今日重點"],
@@ -15,6 +15,18 @@
     return String(s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
+  }
+
+  function refs(list) {
+    return (list || []).map(function (r) {
+      return '<a class="src" href="' + esc(r.link) + '" target="_blank" rel="noopener" title="' + esc(r.title) + '">' + esc(r.source || "來源") + "</a>";
+    }).join("、");
+  }
+
+  function points(list) {
+    return list.map(function (p) {
+      return '<div class="item"><div>' + esc(p.text) + '</div><div class="meta">來源：' + refs(p.refs) + "</div></div>";
+    }).join("");
   }
 
   function total() {
@@ -67,7 +79,17 @@
           }).join("") + "</div></section>";
       }).join("");
 
-    var ov = (state.site.overview || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+    var ov;
+    if (state.hl && state.hl.overview && state.hl.overview.length) {
+      ov = state.hl.overview.map(function (p) {
+        return "<li>" + esc(p.text) + '<div class="meta">來源：' + refs(p.refs) + "</div></li>";
+      }).join("");
+      ov += '<li class="note meta">' + (state.hl.overviewMode === "ai"
+        ? "以上重點由 AI 根據新聞標題整理，內容請以來源原文為準。"
+        : "目前顯示的是各候選人最新的新聞標題，沒有經過 AI 整理。") + "</li>";
+    } else {
+      ov = '<li class="meta">今天還沒有整理好的重點。每天早上 7 點會自動更新。</li>';
+    }
 
     return demoBar() +
       '<div class="wrap">' +
@@ -84,8 +106,12 @@
   function panel(tab, who) {
     var n = esc(who.name);
     var key = who.county + "_" + who.name;
+    var h = state.hl && state.hl.items && state.hl.items[key];
     if (tab === "highlights") {
-      return "<p>示範：這裡會顯示 " + n + " 今天的 2 到 3 則重點，每則附上新聞來源。</p>";
+      if (!h || !h.points.length) return "<p>最近 14 天沒有找到和 " + n + " 有關的新聞，所以沒有今日重點。</p>";
+      return points(h.points) + '<p class="meta note">' + (h.mode === "ai"
+        ? "重點由 AI 根據新聞標題整理，內容請以來源原文為準。"
+        : "目前顯示的是最新的新聞標題，沒有經過 AI 整理。") + "</p>";
     }
     if (tab === "bio") {
       var b = state.bios && state.bios.items && state.bios.items[key];
@@ -103,7 +129,12 @@
           '</a><div class="meta">' + esc(x.source) + "，" + esc(x.date) + "</div></div>";
       }).join("");
     }
-    return "<p>示範：這裡會列出 " + n + " 已公開的行程。找不到時，會寫「目前沒有公開行程」。</p>";
+    var sc = h && h.schedule || [];
+    if (!sc.length) return "<p>目前沒有公開行程。行程只從新聞標題整理，沒有登在新聞上的行程不會出現在這裡。</p>";
+    return sc.map(function (x) {
+      return '<div class="item"><div>' + (x.date ? "<b>" + esc(x.date) + "</b>　" : "") + esc(x.text) +
+        '</div><div class="meta">來源：' + refs([x.ref]) + "</div></div>";
+    }).join("") + '<p class="meta note">行程只從新聞標題整理，可能不完整，請以來源原文為準。</p>';
   }
 
   function candidate(key) {
@@ -184,11 +215,12 @@
 
   function optional(url) { return load(url).catch(function () { return null; }); }
 
-  Promise.all([load("data/candidates.json"), load("data/site.json"), optional("data/news.json"), optional("data/bios.json")]).then(function (res) {
+  Promise.all([load("data/candidates.json"), load("data/site.json"), optional("data/news.json"), optional("data/bios.json"), optional("data/highlights.json")]).then(function (res) {
     state.counties = res[0].counties;
     state.site = res[1];
     state.news = res[2];
     state.bios = res[3];
+    state.hl = res[4];
     window.addEventListener("hashchange", function () { state.tab = "highlights"; route(); });
     route();
   }).catch(function () {

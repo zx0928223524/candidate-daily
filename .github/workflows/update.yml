@@ -23,6 +23,11 @@ jobs:
           python-version: "3.12"
       - name: 蒐集新聞與公開資料
         run: python scripts/update.py
+      - name: 整理每日重點與行程
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/summarize.py
       - name: 有變動才存檔
         run: |
           git config user.name "candidate-daily bot"
