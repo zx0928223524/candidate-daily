@@ -32,6 +32,7 @@ DAYS = 120
 MAX_NEW_AI = 40
 GAP_SECONDS = 7
 C = ["九合一", "選舉", "選票", "投票", "參選", "候選人", "縣長", "市長"]   # 一般性的搜尋字詞
+TAIWAN_WORDS = ["台灣", "臺灣", "九合一", "縣市長", "里長", "中選會", "選委會", "地方選舉"]
 ELECTION_WORDS = ["九合一", "縣市長", "縣長", "市長", "里長", "議員", "中選會", "選委會", "參選", "候選人", "選舉"]
 VERDICTS = {"錯誤", "部分錯誤", "易誤解", "誤導", "事實釐清", "正確", "部分正確", "查證", "無法證實", "不實", "缺乏背景"}
 
@@ -142,8 +143,11 @@ def main():
     for link, it in pool.items():
         blob = it["title"] + " " + it["text"]
         who = [k for n, k in names.items() if n in blob]
-        if not who and not any(w in it["title"] for w in ELECTION_WORDS):
-            continue
+        if not who:
+            # 沒有提到任何候選人：標題要和選舉有關，且標題或分類要明確和台灣有關（排除外國選舉）
+            head = it["title"] + " " + " ".join(it["cats"])
+            if not any(w in it["title"] for w in ELECTION_WORDS) or not any(w in head for w in TAIWAN_WORDS):
+                continue
         it["who"] = who
         keep.append(it)
     keep.sort(key=lambda x: x["dt"], reverse=True)
