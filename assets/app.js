@@ -2,7 +2,7 @@
   "use strict";
 
   var app = document.getElementById("app");
-  var state = { counties: [], site: null, news: null, bios: null, hl: null, county: "全部", query: "", tab: "highlights" };
+  var state = { counties: [], site: null, news: null, bios: null, hl: null, fc: null, county: "全部", query: "", tab: "highlights" };
 
   var TABS = [
     ["highlights", "今日重點"],
@@ -147,27 +147,46 @@
       '<div class="wrap">' +
       '<a class="back" href="#/">返回全部候選人</a>' +
       '<h1 class="who">' + esc(who.name) + "</h1>" +
-      '<p class="where">' + esc(who.county) + "長候選人。" + updated() + "</p>" +
+      '<p class="where">' + esc(who.county) + "長候選人。" + updated() +
+        (fcFor(who.county + "_" + who.name).length ? ' <a class="src" href="#/fake/' + id(who.county, who.name) + '">相關查核 ' + fcFor(who.county + "_" + who.name).length + " 則</a>" : "") + "</p>" +
       '<div class="tabs" role="tablist">' + tabs + "</div>" +
       '<div class="panel" role="tabpanel">' + panel(state.tab, who) + "</div>" +
       "</div>";
   }
 
-  function fake() {
-    var items = (state.site.factchecks || []).map(function (f) {
+  function fcFor(key) {
+    var all = (state.fc && state.fc.items) || [];
+    return key ? all.filter(function (f) { return (f.candidates || []).indexOf(key) > -1; }) : all;
+  }
+
+  function fake(key) {
+    var who = key ? findCandidate(key) : null;
+    var list = fcFor(who ? who.county + "_" + who.name : null);
+    var items = list.map(function (f) {
+      var tags = (f.candidates || []).map(function (k) { return esc(k.split("_")[1]); }).join("、");
       return '<article class="fc"><dl>' +
         "<dt>流傳說法</dt><dd>" + esc(f.claim) + "</dd>" +
-        '<dt>查證結果</dt><dd><span class="badge">' + esc(f.verdict) + "</span></dd>" +
+        '<dt>查證結果</dt><dd><span class="badge">' + esc(f.verdict) + '</span> <span class="meta">' + esc(f.source) + "的結論</span></dd>" +
         "<dt>正確資訊</dt><dd>" + esc(f.truth) + "</dd>" +
-        "<dt>來源</dt><dd>" + esc(f.source) + "</dd>" +
+        '<dt>來源</dt><dd><a class="src" href="' + esc(f.link) + '" target="_blank" rel="noopener">閱讀完整查核報告</a>' +
+        '<span class="meta">，' + esc(f.date) + (tags ? "，提到：" + tags : "") + "</span></dd>" +
         "</dl></article>";
     }).join("");
+    var head = who
+      ? who.name + " 相關的查核"
+      : "假新聞專區";
+    var empty = who
+      ? "目前沒有查核單位針對 " + esc(who.name) + " 發布的查核報告。沒有被查核過的傳言，不代表是真的或假的。"
+      : "目前還沒有整理好的查核報告。每天早上 7 點會自動更新。";
+    var u = state.fc && state.fc.generatedAt ? "資料更新時間：" + esc(state.fc.generatedAt) + "。" : "";
     return demoBar() +
       '<div class="wrap">' +
       '<a class="back" href="#/">返回全部候選人</a>' +
-      '<h1 class="who">假新聞專區</h1>' +
-      '<p class="where">只整理專業查核單位已發布的結果，沒有被查核過的傳言不會標成假的。</p>' +
-      items + "</div>";
+      '<h1 class="who">' + esc(head) + "</h1>" +
+      '<p class="where">' + u + "只整理台灣事實查核中心與 MyGoPen 麥擱騙已發布的查核，結論都是查核單位自己的判斷，" +
+      "查核的是網路上流傳的說法，不代表候選人本人或陣營散布。" +
+      (who ? ' <a class="src" href="#/fake">看全部查核</a>' : "") + "</p>" +
+      (items || '<p class="empty">' + empty + "</p>") + "</div>";
   }
 
   function notFound() {
@@ -178,7 +197,8 @@
     var h = location.hash || "#/";
     var html;
     if (h.indexOf("#/c/") === 0) html = candidate(h.slice(4));
-    else if (h === "#/fake") html = fake();
+    else if (h === "#/fake") html = fake(null);
+    else if (h.indexOf("#/fake/") === 0) html = fake(h.slice(7));
     else html = home();
     app.innerHTML = html;
     document.title = "候選人大小事";
@@ -215,12 +235,13 @@
 
   function optional(url) { return load(url).catch(function () { return null; }); }
 
-  Promise.all([load("data/candidates.json"), load("data/site.json"), optional("data/news.json"), optional("data/bios.json"), optional("data/highlights.json")]).then(function (res) {
+  Promise.all([load("data/candidates.json"), load("data/site.json"), optional("data/news.json"), optional("data/bios.json"), optional("data/highlights.json"), optional("data/factchecks.json")]).then(function (res) {
     state.counties = res[0].counties;
     state.site = res[1];
     state.news = res[2];
     state.bios = res[3];
     state.hl = res[4];
+    state.fc = res[5];
     window.addEventListener("hashchange", function () { state.tab = "highlights"; route(); });
     route();
   }).catch(function () {
