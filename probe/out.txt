@@ -1,0 +1,42 @@
+ERR https://tfc-taiwan.org.tw/rss.xml
+  HTTPError: HTTP Error 404: Not Found
+
+OK 200 https://tfc-taiwan.org.tw/rss
+  final=https://tfc-taiwan.org.tw/feed/
+  type=application/rss+xml; charset=UTF-8 len=11226
+  head='<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"\n\txmlns:content="http://purl.org/rss/1.0/modules/content/"\n\txmlns:wfw="http://wellformedweb.org/CommentAPI/"\n\txmlns:dc="http://purl.org/dc/elements/1.1/"\n\txmlns:atom="http://www.w3.org/2005/Atom"\n\txmlns:sy="http://purl.org/rss/1.0/modules/syndication/"\n\txmlns:slash="http://purl.org/rss/1.0/modules/slash/"\n\t>\n\n<channel>\n\t<title>台灣事實查核中心</title>\n\t<atom:link href="https://tfc-taiwan.org.tw/feed/" rel="self" type="application/rs'
+
+OK 200 https://tfc-taiwan.org.tw/feed
+  final=https://tfc-taiwan.org.tw/feed/
+  type=application/rss+xml; charset=UTF-8 len=11226
+  head='<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"\n\txmlns:content="http://purl.org/rss/1.0/modules/content/"\n\txmlns:wfw="http://wellformedweb.org/CommentAPI/"\n\txmlns:dc="http://purl.org/dc/elements/1.1/"\n\txmlns:atom="http://www.w3.org/2005/Atom"\n\txmlns:sy="http://purl.org/rss/1.0/modules/syndication/"\n\txmlns:slash="http://purl.org/rss/1.0/modules/slash/"\n\t>\n\n<channel>\n\t<title>台灣事實查核中心</title>\n\t<atom:link href="https://tfc-taiwan.org.tw/feed/" rel="self" type="application/rs'
+
+OK 200 https://tfc-taiwan.org.tw/articles/report
+  final=https://tfc-taiwan.org.tw/fact-check-reports-all/
+  type=text/html; charset=UTF-8 len=281372
+  head='<!doctype html>\n<html lang="zh-TW" class="no-js" itemtype="https://schema.org/WebPage" itemscope>\n<head>\n\t<meta charset="UTF-8">\n\t<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">\n\t<meta name=\'robots\' content=\'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1\' />\n\n\t<!-- This site is optimized with the Yoast SEO plugin v28.6 - https://yoast.com/product/yoast-seo-wordpress/ -->\n\t<title>查核報告 - 台灣事實查核中心</title>\n\t<'
+
+OK 200 https://www.mygopen.com/feeds/posts/default?alt=rss&max-results=3
+  final=https://www.mygopen.com/feeds/posts/default?alt=rss&max-results=3
+  type=application/rss+xml; charset=UTF-8 len=69627
+  head='<?xml version=\'1.0\' encoding=\'UTF-8\'?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:blogger="http://schemas.google.com/blogger/2008" xmlns:georss="http://www.georss.org/georss" xmlns:gd="http://schemas.google.com/g/2005" xmlns:thr="http://purl.org/syndication/thread/1.0" version="2.0"><channel><atom:id>tag:blogger.com,1999:blog-4272037284105697328</atom:id><lastBuildDate>Sat, 10 Oct 2026 09:16:06 +0000</lastBuildDate><category>謠�'
+
+OK 200 https://www.mygopen.com/feeds/posts/default?alt=rss&max-results=3&q=%E9%81%B8%E8%88%89
+  final=https://www.mygopen.com/feeds/posts/default?alt=rss&max-results=3&q=%E9%81%B8%E8%88%89
+  type=application/rss+xml; charset=UTF-8 len=63397
+  head='<?xml version=\'1.0\' encoding=\'UTF-8\'?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:blogger="http://schemas.google.com/blogger/2008" xmlns:georss="http://www.georss.org/georss" xmlns:gd="http://schemas.google.com/g/2005" xmlns:thr="http://purl.org/syndication/thread/1.0" version="2.0"><channel><atom:id>tag:blogger.com,1999:blog-4272037284105697328</atom:id><lastBuildDate>Sat, 10 Oct 2026 09:16:06 +0000</lastBuildDate><category>謠�'
+
+OK 200 https://www.mygopen.com/search?q=%E9%81%B8%E8%88%89
+  final=https://www.mygopen.com/search?q=%E9%81%B8%E8%88%89
+  type=text/html; charset=UTF-8 len=423478
+  head="<!DOCTYPE html>\n<html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>\n<!--\n<head>\n<link href='https://www.blogger.com/static/v1/widgets/2872013778-css_bundle_v2.css' rel='stylesheet' type='text/css'/>\n<meta content='max-image-preview:large' name='robots'/>\n<meta content='mluzaq9v9psw9b40obeg4kkc2idmcz' name='facebook-domain-verification'/>\n\n-->\n<"
+
+OK 200 https://news.google.com/rss/search?q=%28site%3Atfc-taiwan.org.tw%20OR%20site%3Amygopen.com%29%20%E9%81%B8%E8%88%89%20when%3A30d&hl=zh-TW&gl=TW&ceid=TW:zh-Hant
+  final=https://news.google.com/rss/search?q=%28site%3Atfc-taiwan.org.tw%20OR%20site%3Amygopen.com%29%20%E9%81%B8%E8%88%89%20when%3A30d&hl=zh-TW&gl=TW&ceid=TW:zh-Hant
+  type=application/xml; charset=utf-8 len=29366
+  head='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><generator>NFE/5.0</generator><title>"(site:tfc-taiwan.org.tw OR site:mygopen.com) 選舉 when:30d" - Google 新聞</title><link>https://news.google.com/search?q=(site:tfc-taiwan.org.tw+OR+site:mygopen.com)+%E9%81%B8%E8%88%89+when:30d&amp;hl=zh-TW&amp;gl=TW&amp;ceid=TW:zh-Hant</link><language>zh-TW</language><webMaster>news-webmaster@google.com</webMaster><copyright>Copyright © 2026 Google. All rights reserved. This XML feed is made available solely for the purpose of rendering Google News results within a personal feed reader for personal, non-commercial use. Any other use of the feed is expressly prohibited. By accessing this feed or using these results in any manner whatsoever, you agree to be bound by the foregoing restrictions.</copyright><lastBuildDate>Sun, 11 Oct 2026 16:28:57 GMT</lastBuildDate><image><title>Google 新聞</title><url>https://lh3.googleusercontent.com/-DR60l-K8vnyi99NZovm9HlXyZwQ85GMDxiwJWzoasZYCUrPuUM_P_4Rb7ei03j-0nRs0c4F=w256</url><link>https://news.google.com/</link><height>256</height><width>256</width></image><description>Google 新聞</description><item><title>【易誤解】台灣司法獨立跌至與印度同級？司法審查不公？非單一因素所致！原始報告並未說明具體原因 - MyGoPen</title><link>https://news.google.com/rss/articles/CBMiU0FVX3lxTE54S2o3Q2xiUzhIRy1lTkItYjB1T2xTclJoUGpqLXduYXRnZjkzc0'
+
+OK 200 https://news.google.com/
+  final=https://news.google.com/home?hl=en-US&gl=US&ceid=US:en
+  type=text/html; charset=utf-8 len=1865859
+  head='<!doctype html><html lang="en-US" dir="ltr"><head><base href="https://news.google.com/"><link rel="preconnect" href="//www.gstatic.com"><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width,initial-scale=1,minimal-ui,viewport-fit=cover"><meta name="google-site-verification" content="AcBy5YFny2HQgVUCR18tO5YUTf6MpVlcJqGTd-a9-SI"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="application-name" content="News"><meta name="apple-mobile-web-app-title" content="News"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="theme-color" content="white"><meta name="msapplication-tap-highlight" content="no"><link rel="shortcut icon" href="https://lh3.googleusercontent.com/-D'
