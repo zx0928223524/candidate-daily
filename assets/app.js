@@ -57,6 +57,9 @@
     if (state.news && state.news.failed && state.news.failed.length) {
       s += "。部分候選人這次更新失敗，顯示的是前一次的資料";
     }
+    if (state.news && state.news.lastError && state.news.lastError > (state.news.generatedAt || "")) {
+      s += "。" + esc(state.news.lastError) + " 的更新失敗，顯示的是前一次的資料";
+    }
     return s;
   }
 
